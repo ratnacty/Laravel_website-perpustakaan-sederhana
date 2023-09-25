@@ -48,16 +48,19 @@ class PengembalianController extends Controller
             $returnData->save();
 
            
-             
-               
+
+            
 
             DB::beginTransaction();
 
-
+           
             $book =Book::findOrFail($request->buku_id);
             $book->status = 'Available';
             $book->save();
+
             DB::commit();
+
+            
             
             return redirect()->back()->with(['success' => 'Process Return Successfully']);
 

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -18,16 +18,34 @@ class PeminjamanController extends Controller
      */
     public function index(Request $request)
     {
+
+        
+
+
         if($request->has('search')){
             $data = Peminjaman::where('nomor_pinjam','LIKE','%' . $request->search . '%')->paginate(10);
                    
+           
+
         }else{
             $data = Peminjaman::paginate(10);
         }
 
-        
+        $tgl1 =$data['tanggal_pengembalian'] ;
+        $tgl2 =$data['actual_pengembalian'];
+        $selisih = $tgl2-$tgl1;
+         $d =($selisih/(60*60*24)%365);
 
-        return view('Home.backend.peminjaman.index',compact('data'));
+
+
+        $tanggal = $d;
+
+        $denda = 1000;
+        $hasildenda = 2*$denda;
+
+        dd($tgl1);
+
+        return view('Home.backend.peminjaman.index',compact('data','tanggal','hasildenda'));
 
         
     }

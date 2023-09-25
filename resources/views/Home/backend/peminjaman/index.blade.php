@@ -48,6 +48,8 @@
                   <th>Tanggal Pinjam</th>
                   <th>Tanggal Kembali</th>
                   <th>Actual Pengembalian</th>
+                  <th>Selisih</th>
+                  <th>Denda</th>
                   <th>Status</th>
                  
                 </tr>
@@ -57,7 +59,20 @@
                 @php
                  $i = 1;   
                 @endphp
+{{-- 
+@php
+$tgl1 =Carbon::parse( $data['tanggal_pengembalian']) ;
+$tgl2 =Carbon::parse( $data['actual_pengembalian'] );
+$selisih = $tgl2->diffInDays($tgl1);
+// $d =($selisih/(60*60*24)%365);
 
+
+$tanggal = $selisih;
+
+$denda = 10;
+$hasildenda = $tanggal*$denda;
+@endphp --}}
+              
                 @foreach ($data as $index => $row)
                     
                 <tr class="{{ $row->actual_pengembalian == null ? '' : ($row->tanggal_pengembalian < $row->actual_pengembalian ? 'text-white bg-danger' : 'text-white bg-success') }}">
@@ -69,6 +84,21 @@
                   <td>{{ date('d-m-Y',strtotime($row['tanggal_pinjam'])) }}</td>
                   <td>{{ date('d-m-Y',strtotime($row['tanggal_pengembalian'])) }}</td>
                   <td>{{ $row['actual_pengembalian'] }}</td>
+
+                
+                    
+
+       
+                 
+        {{-- <td>
+          @if ($row['actual_pengembalian'] > $row['tanggal_pengembalian'] )
+                    {{ $row['actual_pengembalian'] - $row['tanggal_pengembalian'] }}
+          @endif
+        </td>
+        <td> @if ($row['actual_pengembalian'] > $row['tanggal_pengembalian'] )
+          {{ $hasildenda }}
+@endif</td> --}}
+
 
                   @if ($row['status'] == 'prosess')
                    <td> <span class="badge bg-label-info">{{ $row->status }} </span></td>
